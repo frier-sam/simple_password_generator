@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Password Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #444;
+            padding: 10px 20px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            width: 80%;
+            max-width: 400px;
+            background-color: #444;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <span>Simple Password Generator</span>
+        <button onclick="window.open('https://github.com/', '_blank')">Github</button>
+    </div>
+
+    <div class="container">
+        <h2>Password Generator</h2>
+
+        <label for="length">Password Length: <span id="lengthLabel">8</span></label>
+        <input type="range" id="length" min="4" max="50" value="8">
+        <br><br>
+
+        <input type="checkbox" id="uppercase" checked> Capital Letters<br>
+        <input type="checkbox" id="lowercase" checked> Small Letters<br>
+        <input type="checkbox" id="numbers" checked> Numbers<br>
+        <input type="checkbox" id="specialChar" checked> Special Characters<br>
+        <br><br>
+
+        <button onclick="generatePassword()">Generate Password</button>
+        <br><br>
+
+        <input type="text" id="password" readonly style="width: 100%; padding: 8px; border-radius: 5px;">
+    </div>
+
+    <script>
+        const lengthInput = document.getElementById("length");
+        const lengthLabel = document.getElementById("lengthLabel");
+        const passwordOutput = document.getElementById("password");
+
+        lengthInput.addEventListener("input", function () {
+            lengthLabel.textContent = this.value;
+        });
+
+        function generatePassword() {
+            const charset = {
+                uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                lowercase: 'abcdefghijklmnopqrstuvwxyz',
+                numbers: '0123456789',
+                specialChar: '!@#$%^&*()-_=+[]{}|;:,.<>?'
+            };
+
+            let charsToUse = '';
+            if (document.getElementById('uppercase').checked) charsToUse += charset.uppercase;
+            if (document.getElementById('lowercase').checked) charsToUse += charset.lowercase;
+            if (document.getElementById('numbers').checked) charsToUse += charset.numbers;
+            if (document.getElementById('specialChar').checked) charsToUse += charset.specialChar;
+
+            let generatedPassword = '';
+            for (let i = 0; i < lengthInput.value; i++) {
+                const randomIndex = Math.floor(Math.random() * charsToUse.length);
+                generatedPassword += charsToUse[randomIndex];
+            }
+
+            passwordOutput.value = generatedPassword;
+        }
+
+        // Generate an initial password when the page opens
+        generatePassword();
+    </script>
+</body>
+
+</html>
